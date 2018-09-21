@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/Users/wangzy/workspace/opencv_work/opencvface2/opencv/src/main/assets"/><source path="/Users/wangzy/workspace/opencv_work/opencvface2/opencv/build/generated/assets/shaders/debug"/></dataSet><dataSet config="debug"><source path="/Users/wangzy/workspace/opencv_work/opencvface2/opencv/src/debug/assets"/></dataSet></merger>
