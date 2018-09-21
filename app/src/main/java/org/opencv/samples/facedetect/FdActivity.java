@@ -29,7 +29,7 @@ import java.io.InputStream;
 
 public class FdActivity extends Activity implements CvCameraViewListener2 {
 
-    private static final String TAG = "OCVSample::Activity";
+    private static final String TAG = "cv";
     private static final Scalar FACE_RECT_COLOR = new Scalar(0, 255, 0, 255);
     public static final int JAVA_DETECTOR = 0;
     public static final int NATIVE_DETECTOR = 1;
@@ -125,7 +125,10 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
         setContentView(R.layout.face_detect_surface_view);
 
-        mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.fd_activity_surface_view);
+        mOpenCvCameraView = findViewById(R.id.fd_activity_surface_view);
+
+        mOpenCvCameraView.setUseFrontCamera(false);
+
         mOpenCvCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
     }
@@ -192,13 +195,13 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
 
         Rect[] facesArray = faces.toArray();
+        if (null != facesArray && facesArray.length > 0) {
+            Log.d(TAG, "发现" + facesArray.length + "张脸");
+            for (int i = 0; i < facesArray.length; i++) {
+                Imgproc.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
+            }
 
-        Log.d(TAG, "发现" + facesArray.length + "张脸");
-
-        for (int i = 0; i < facesArray.length; i++) {
-            Imgproc.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
         }
-
 
         return mRgba;
     }
