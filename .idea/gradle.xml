@@ -8,7 +8,10 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/calibration" />
+            <option value="$PROJECT_DIR$/camera_control" />
+            <option value="$PROJECT_DIR$/camera_preview" />
+            <option value="$PROJECT_DIR$/face_dect" />
             <option value="$PROJECT_DIR$/opencv" />
           </set>
         </option>
