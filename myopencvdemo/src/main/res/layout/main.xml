@@ -1,20 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:orientation="vertical"
+              android:gravity="center"
+              android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/buttonPreview"
-        android:layout_width="243dp"
-        android:layout_height="55dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
-        android:text="预览"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</android.support.constraint.ConstraintLayout>
+            android:id="@+id/buttonPreview"
+            android:layout_width="243dp"
+            android:layout_height="55dp"
+            android:text="预览"
+    />
+
+
+    <Button
+            android:id="@+id/createMlData"
+            android:layout_width="243dp"
+            android:layout_height="55dp"
+            android:text="生成学习结果"
+
+    />
+
+
+    <Button
+            android:id="@+id/buttonAna"
+            android:layout_width="244dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="20dp"
+            android:text="dan张图片分析"
+
+
+    />
+</LinearLayout>
