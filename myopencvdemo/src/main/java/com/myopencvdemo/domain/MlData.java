@@ -1,12 +1,8 @@
 package com.myopencvdemo.domain;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 import com.myopencvdemo.App;
 import com.myopencvdemo.datapool.DataPool;
-import org.opencv.android.Utils;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfFloat;
 import org.opencv.core.Size;
@@ -14,32 +10,33 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.List;
-
-import static org.opencv.core.CvType.CV_32F;
-import static org.opencv.core.CvType.CV_8UC1;
-import static org.opencv.core.CvType.CV_8UC3;
+import java.util.HashMap;
 
 public class MlData {
 
     public static final int UNITWIDTH = 40, UNITHEIGHT = 60;
 
-
     public String label;
-    public ArrayList<File> files;
+    public HashMap<File, MatOfFloat> datas;
 
+    public ArrayList<MatOfFloat> listDatas;
 
     public MlData(String label) {
         this.label = label;
-        files = new ArrayList<>();
+        this.datas = new HashMap<>();
+        this.listDatas=new ArrayList<>();
     }
 
-    public void addFiles(File file) {
-        this.files.add(file);
+    public void putMlData(File file, MatOfFloat matOfFloat) {
+        this.datas.put(file, matOfFloat);
+        this.listDatas.add(matOfFloat);
     }
+
+    public ArrayList<MatOfFloat> getAllMatdata(){
+        return this.listDatas;
+    }
+
 
     public String getLabel() {
         return label;
@@ -49,42 +46,57 @@ public class MlData {
         this.label = label;
     }
 
-    public ArrayList<File> getFiles() {
-        return files;
+    public HashMap<File, MatOfFloat> getDatas() {
+        return datas;
     }
 
-    public void setFiles(ArrayList<File> files) {
-        this.files = files;
+    public static MlData createMlDataFromDirectory(File dir) {
+
+        MlData mlData = new MlData(dir.getName());
+
+        if (null != dir && dir.exists() && dir.isDirectory()) {
+            File[] stdfiles = dir.listFiles();
+            for (int i = 0, isize = stdfiles.length; i < isize; i++) {
+                File df = stdfiles[i];
+
+                if (null != df && df.exists() && (df.getAbsolutePath().endsWith(".png") || df.getAbsolutePath().endsWith(".PNG"))) {
+                    MatOfFloat matOfFloat = createMlDataFromFile(df);
+                    if (null != matOfFloat) {
+                        mlData.putMlData(df, matOfFloat);
+                    }
+                }
+            }
+        } else {
+            Log.e(App.tag, "study data must be a Directory");
+        }
+
+        return mlData;
     }
 
 
-    public static void createMlDataFromFile(File file) {
+    private static MatOfFloat createMlDataFromFile(File file) {
 
         try {
-
-//            Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
-
-//            Mat::Mat(rows, cols, type)
-//            Mat mat = new Mat(bitmap.getWidth(),bitmap.getHeight(), CV_8UC3);
-
-//            Utils.bitmapToMat(bitmap,mat);
 
             Mat mat = Imgcodecs.imread(file.getAbsolutePath());
             Mat dstMat = new Mat(UNITWIDTH, UNITHEIGHT, mat.type());
             Imgproc.resize(mat, dstMat, new Size(UNITWIDTH, UNITHEIGHT));
+
             MatOfFloat descriptors = new MatOfFloat();
             DataPool.getHogDescriptor().compute(dstMat, descriptors);
+//          List<Float> list = descriptors.toList();
+//          Log.i(App.tag, "create vector:" + file.getAbsolutePath());
 
-            List<Float> list = descriptors.toList();
-
-            Log.i(App.tag,"create vector:"+file.getAbsolutePath());
-
-
+            return descriptors;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
+    }
 
 
-
+    @Override
+    public String toString() {
+        return "label:"+label+" datasize:"+datas.size();
     }
 }

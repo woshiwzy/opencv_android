@@ -54,9 +54,17 @@
             android:layout_alignParentLeft="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="学习"
+            android:text="学习模式"
             android:background="@android:color/darker_gray"
     />
+
+    <TextView
+            android:id="@+id/textViewResult"
+            android:background="#88000000"
+            android:textColor="#bbffaa"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
 
 </RelativeLayout>

@@ -7,28 +7,22 @@
 
     <Button
             android:id="@+id/buttonPreview"
-            android:layout_width="243dp"
+            android:layout_width="match_parent"
+            android:visibility="invisible"
             android:layout_height="55dp"
-            android:text="预览"
-    />
-
+            android:text="预览"/>
 
     <Button
             android:id="@+id/createMlData"
-            android:layout_width="243dp"
+            android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:text="生成学习结果"
-
-    />
+            android:text="开始使用"/>
 
 
     <Button
             android:id="@+id/buttonAna"
-            android:layout_width="244dp"
+            android:layout_width="match_parent"
             android:layout_height="46dp"
-            android:layout_marginTop="20dp"
-            android:text="dan张图片分析"
-
-
-    />
+            android:visibility="invisible"
+            android:text="dan张图片分析"/>
 </LinearLayout>
