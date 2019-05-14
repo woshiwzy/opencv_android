@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import com.myopencvdemo.datapool.DataPool;
 import com.myopencvdemo.domain.MlData;
@@ -26,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     public static String mldata = "good_data";
 
     public static String mldataPath = Environment.getExternalStorageDirectory() + File.separator + mldata;
+
+
+    TextView textViewStatus;
 
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
@@ -69,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        textViewStatus=findViewById(R.id.textViewStatus);
+
         findViewById(R.id.buttonPreview).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                showProgressBar();
+
                 new MlThread(mldataPath).start();
 
             }
@@ -115,6 +121,14 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void run() {
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    textViewStatus.setText("开始");
+                }
+            });
+
             File file = new File(path);
             File[] fs = file.listFiles();
             DataPool.clear();
@@ -136,7 +150,9 @@ public class MainActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    hideProgressBar();
+//                    hideProgressBar();
+
+                    textViewStatus.setText("结束");
 
                     Intent intent = new Intent(MainActivity.this, CameraPreviewActivity.class);
                     startActivity(intent);

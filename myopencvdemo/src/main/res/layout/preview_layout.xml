@@ -3,16 +3,54 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <org.opencv.android.JavaCameraView
-            android:id="@+id/tutorial1_activity_java_surface_view"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:visibility="gone"
-            opencv:camera_id="any"
-            opencv:show_fps="true"/>
+
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
 
 
-    <LinearLayout
+        <org.opencv.android.JavaCameraView
+                android:id="@+id/tutorial1_activity_java_surface_view"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:visibility="gone"
+                opencv:camera_id="any"
+                opencv:show_fps="false"/>
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical">
+
+
+            <View android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="4"
+                  android:id="@+id/converView"
+                  android:background="#88000000"/>
+
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="0dp"
+                          android:layout_weight="1"
+                          android:orientation="horizontal"
+                          android:id="@+id/viewContent">
+
+                <View android:layout_width="2dp" android:layout_height="match_parent"
+                      android:background="@android:color/holo_red_dark"/>
+
+            </LinearLayout>
+
+
+            <View android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="4"
+                  android:background="#88000000"/>
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/relativeLayoutBottomOp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -27,16 +65,25 @@
                 android:layout_height="wrap_content"
                 android:max="255"
                 android:maxWidth="150dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
                 android:min="0"
+                android:layout_toLeftOf="@id/checkBoxCaerma"
                 android:minWidth="150dp"
                 android:progress="125"/>
 
         <CheckBox
                 android:id="@+id/checkBoxCaerma"
+                android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:text="切换"/>
-    </LinearLayout>
+
+
+    </RelativeLayout>
 
 
     <ImageView
@@ -61,8 +108,8 @@
     <TextView
             android:id="@+id/textViewResult"
             android:background="#88000000"
+            android:layout_above="@id/relativeLayoutBottomOp"
             android:textColor="#bbffaa"
-            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
