@@ -41,4 +41,12 @@ public class RecResult {
     }
 
 
+    @Override
+    public String toString() {
+        return "RecResult{" +
+                "resultLabel='" + resultLabel + '\'' +
+                ", startX=" + startX +
+                ", filePath='" + filePath + '\'' +
+                '}';
+    }
 }

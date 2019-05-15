@@ -20,6 +20,8 @@ import org.opencv.imgproc.Imgproc;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.opencv.core.CvType.CV_8UC1;
@@ -83,7 +85,7 @@ public class CameraPreviewActivity extends Activity implements CameraBridgeViewB
         Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        setContentView(R.layout.preview_layout);
+        setContentView(R.layout.camera_preview_layout);
 
         imageViewRightTarget = findViewById(R.id.imageViewRightTarget);
         viewContent = findViewById(R.id.viewContent);
@@ -280,7 +282,7 @@ public class CameraPreviewActivity extends Activity implements CameraBridgeViewB
                             File file = new File(resultLabel);
                             String responnse = file.getParentFile().getName();
                             if (!"X".equalsIgnoreCase(responnse)) {
-                                Log.e(App.tag, "识别结果：" + responnse);
+//                                Log.e(App.tag, "识别结果：" + responnse);
                                 predicateds.add(new RecResult(responnse, rect.x, resultLabel));
                             }
 
@@ -293,6 +295,26 @@ public class CameraPreviewActivity extends Activity implements CameraBridgeViewB
                     }
                 }
             }
+
+            Collections.sort(predicateds, new Comparator<RecResult>() {
+
+                @Override
+                public int compare(RecResult o1, RecResult o2) {
+
+                    if (o1.getStartX() <= o2.getStartX()) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                }
+            });
+
+            Log.e(App.tag, "------------------------------------------------------------------------------------------");
+            for (int i = 0, isize = predicateds.size(); i < isize; i++) {
+                Log.e(App.tag, "------>:" + predicateds.get(i).toString());
+            }
+            Log.e(App.tag, "------------------------------------------------------------------------------------------");
+
 
             bitmap = Bitmap.createBitmap(targetCropRect.width, targetCropRect.height, Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(copyMat, bitmap);
