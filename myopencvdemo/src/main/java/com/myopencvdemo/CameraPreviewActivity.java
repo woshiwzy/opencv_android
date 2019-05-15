@@ -73,8 +73,8 @@ public class CameraPreviewActivity extends Activity implements CameraBridgeViewB
     private TextView textViewResult;
 
 
-    private int cropContentPercent = 1;
-    private int coverContentPercennt = 1;
+    private float cropContentPercent = 1;
+    private float coverContentPercennt = 1;
 
 
     /**
@@ -92,8 +92,8 @@ public class CameraPreviewActivity extends Activity implements CameraBridgeViewB
         viewContent.post(new Runnable() {
             @Override
             public void run() {
-                cropContentPercent = (int) (((LinearLayout.LayoutParams) viewContent.getLayoutParams()).weight);
-                coverContentPercennt = (int) (((LinearLayout.LayoutParams) findViewById(R.id.converView).getLayoutParams()).weight);
+                cropContentPercent = (((LinearLayout.LayoutParams) viewContent.getLayoutParams()).weight);
+                coverContentPercennt = (((LinearLayout.LayoutParams) findViewById(R.id.converView).getLayoutParams()).weight);
                 Log.e(App.tag, "weight is :" + cropContentPercent + " cover:" + coverContentPercennt * 2);
 
             }
