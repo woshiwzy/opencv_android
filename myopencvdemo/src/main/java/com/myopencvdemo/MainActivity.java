@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        textViewStatus=findViewById(R.id.textViewStatus);
+        textViewStatus = findViewById(R.id.textViewStatus);
 
         findViewById(R.id.buttonPreview).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    textViewStatus.setText("开始");
+                    textViewStatus.setText("稍后");
                 }
             });
 

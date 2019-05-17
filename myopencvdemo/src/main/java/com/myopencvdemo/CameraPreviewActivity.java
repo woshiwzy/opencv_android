@@ -238,8 +238,9 @@ public class CameraPreviewActivity extends Activity implements CameraBridgeViewB
                 Rect rect = Imgproc.boundingRect(temp);
 
                 float wh = (rect.width * 1.0f / rect.height);
+                boolean test = false;
 
-                if ((rect.height > (targetHeight / 4)) && (rect.height < 0.8f * targetHeight) && (rect.width < (targetMat.width() / 8)) && (wh < 2)) {
+                if ((test) || (rect.height > (targetHeight*1.0f / 5)) && (rect.height < 0.8f * targetHeight) && (rect.width < (targetMat.width() / 8)) && (wh < 2)) {
 //                   Log.e(App.tag, "------>>>rhfactor:" + wh + " startX:" + rect.x);
                     Imgproc.rectangle(copyMat, rect.tl(), rect.br(), new Scalar(0, 0, 255, 255), 2);
                     targetAreas.add(temp);
@@ -390,7 +391,7 @@ public class CameraPreviewActivity extends Activity implements CameraBridgeViewB
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            textViewResult.setText("识别结果:" + stringBuffer.toString()+"点击重新识别");
+                            textViewResult.setText("识别结果:" + stringBuffer.toString() + "点击重新识别");
                         }
                     });
 
