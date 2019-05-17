@@ -35,6 +35,9 @@ public class CameraPreviewActivity extends Activity implements CameraBridgeViewB
     private CheckBox checkBoxStudy;
     private View viewContent;
 
+    private ArrayList<String> cardTypes = new ArrayList<>();
+
+
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
@@ -68,7 +71,7 @@ public class CameraPreviewActivity extends Activity implements CameraBridgeViewB
     ImageView imageViewRightTarget;
 
     private boolean needRec = true;
-    private int cardNo = 13;//13 poker card
+    private int huseCount = 13;//13 poker card 花色的总数，代表这么多张卡片
 
     private TextView textViewResult;
 
@@ -135,6 +138,13 @@ public class CameraPreviewActivity extends Activity implements CameraBridgeViewB
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
 
         mOpenCvCameraView.setCvCameraViewListener(this);
+
+        cardTypes.add("梅花");
+        cardTypes.add("红桃");
+        cardTypes.add("方块");
+        cardTypes.add("黑桃");
+
+
     }
 
     @Override
@@ -272,12 +282,13 @@ public class CameraPreviewActivity extends Activity implements CameraBridgeViewB
                             Mat nmatf = matf.reshape(0, 1);
 
                             Mat result = new Mat();
-//                        Log.e(App.tag, "test col:" + nmatf.cols());
+//                          Log.e(App.tag, "test col:" + nmatf.cols());
 
                             float response = DataPool.getkNearest().predict(nmatf, result);
 //
 //                          Log.e(App.tag, "percent:" + DataPool.getPredicatedResult(response) + " predicated:" + nmatf.toString());
 
+                            String resultStr = result.toString();
                             String resultLabel = DataPool.getPredicatedResult(response);
                             File file = new File(resultLabel);
                             String responnse = file.getParentFile().getName();
@@ -291,6 +302,8 @@ public class CameraPreviewActivity extends Activity implements CameraBridgeViewB
 //                            matf.release();
 //                            nmatf.release();
 //                            result.release();
+
+
                         }
                     }
                 }
@@ -309,23 +322,92 @@ public class CameraPreviewActivity extends Activity implements CameraBridgeViewB
                 }
             });
 
-            Log.e(App.tag, "------------------------------------------------------------------------------------------");
-            for (int i = 0, isize = predicateds.size(); i < isize; i++) {
-                Log.e(App.tag, "------>:" + predicateds.get(i).toString());
-            }
-            Log.e(App.tag, "------------------------------------------------------------------------------------------");
+            ArrayList<RecResult> huase = new ArrayList<>();//花色，
+            ArrayList<RecResult> cardNo = new ArrayList<>();//对应花色的值
 
+//          Log.e(App.tag, "------------------------------------------------------------------------------------------");
+            for (int i = 0, isize = predicateds.size(); i < isize; i++) {
+                RecResult card = predicateds.get(i);
+                if (cardTypes.contains(card.getResultLabel())) {
+                    huase.add(card);
+                } else {
+                    cardNo.add(card);
+                }
+            }
+            if (huase.size() == huseCount) {//识别出指定数量的卡片数量
+
+
+                ArrayList<Poker> pokers = new ArrayList<>();//存放识别结果
+
+                StringBuffer sbfCardNo = new StringBuffer();
+
+                //正确的处理10的识别结果，如果只出现了1或者0，识别结果都是不对的
+                for (int i = 0, isize = cardNo.size(); i < isize; i++) {
+                    if ("1".equalsIgnoreCase(cardNo.get(i).getResultLabel())) {
+                        if ((i + 1) < isize) {
+                            String nextZero = cardNo.get(i + 1).getResultLabel();
+                            if ("0".equalsIgnoreCase(nextZero)) {
+                                //1和0 不能分开，而且只有10这种情况
+                                sbfCardNo.append(cardNo.get(i).getResultLabel() + cardNo.get(i + 1).getResultLabel() + ",");
+                                i++;
+                            } else {
+                                Log.e(App.tag, "识别1但是紧接着不是0【识别失败】");
+                                break;
+                            }
+                        } else {
+                            Log.e(App.tag, "识别到最后一个数字是1本次【识别失败】");
+                            break;
+                        }
+                    } else {
+                        sbfCardNo.append(cardNo.get(i).getResultLabel() + ",");
+                    }
+                }
+
+
+                String[] cards = sbfCardNo.toString().split(",");
+                ArrayList<String> rightCardNo = new ArrayList<>();
+                for (int i = 0, isize = cards.length; i < isize; i++) {
+                    if (!"0".equals(cards[i]) && !"1".equals(cards[i])) {//如果识别结果单独出现了1，或者 0 是不对的
+                        rightCardNo.add(cards[i]);
+                    }
+                }
+
+                //经过处理后，如果和花色的数量是一样的，就算识别正确了
+                if (rightCardNo.size() == huseCount) {//筛选出正确的识别结果，到这里为止，算是识别成功
+
+                    Log.e(App.tag, "----------------------------Nice-------------------");
+
+                    final StringBuffer stringBuffer = new StringBuffer();
+                    for (int i = 0, isize = rightCardNo.size(); i < isize; i++) {
+                        Poker poker = new Poker(huase.get(i).getResultLabel(), rightCardNo.get(i));
+                        pokers.add(poker);
+                        stringBuffer.append(poker.toString());
+                    }
+
+                    Log.e(App.tag, "识别结果:" + stringBuffer);
+                    Log.e(App.tag, "----------------------------Nice End-------------------");
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            textViewResult.setText("识别结果:" + stringBuffer.toString()+"点击重新识别");
+                        }
+                    });
+
+                    needRec = false;
+                }
+
+            }
 
             bitmap = Bitmap.createBitmap(targetCropRect.width, targetCropRect.height, Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(copyMat, bitmap);
-
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     imageViewRightTarget.setImageBitmap(bitmap);
                 }
             });
-
+            targetMat.release();
 
             return gray;
         } catch (Exception e) {
@@ -335,6 +417,39 @@ public class CameraPreviewActivity extends Activity implements CameraBridgeViewB
         }
 
         return null;
+    }
+
+
+    class Poker {
+
+        String pokertype;
+        String cardNo;
+
+        public Poker(String pokertype, String cardNo) {
+            this.pokertype = pokertype;
+            this.cardNo = cardNo;
+        }
+
+        public String getPokertype() {
+            return pokertype;
+        }
+
+        public void setPokertype(String pokertype) {
+            this.pokertype = pokertype;
+        }
+
+        public String getCardNo() {
+            return cardNo;
+        }
+
+        public void setCardNo(String cardNo) {
+            this.cardNo = cardNo;
+        }
+
+        @Override
+        public String toString() {
+            return "(" + pokertype + ":" + cardNo + ")";
+        }
     }
 
 }

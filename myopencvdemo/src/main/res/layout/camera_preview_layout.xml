@@ -28,7 +28,7 @@
 
             <LinearLayout android:layout_width="match_parent"
                           android:layout_height="0dp"
-                          android:layout_weight="1.2"
+                          android:layout_weight="1.1"
                           android:orientation="horizontal"
                           android:background="@drawable/shape_bg_line"
                           android:id="@+id/viewContent">
@@ -105,9 +105,10 @@
 
     <TextView
             android:id="@+id/textViewResult"
-            android:background="#88000000"
-            android:layout_above="@id/relativeLayoutBottomOp"
+            android:background="@drawable/shape_bg_result"
+            android:layout_alignParentBottom="true"
             android:textColor="#bbffaa"
+            android:minHeight="40dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
