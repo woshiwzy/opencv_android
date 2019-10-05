@@ -513,7 +513,7 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
         }
 
         //如果预览框的高度大于1080 在某些设备上的相机不能支持,导致相机连接失败，最好不要超过1080的高度
-        //calcHeight = calcHeight >= 1080 ? 1080 : calcHeight;
+        calcHeight = calcHeight >= 1080 ? 1080 : calcHeight;
         return new Size(calcWidth, calcHeight);
     }
 
