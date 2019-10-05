@@ -77,7 +77,6 @@ public class Tutorial3View extends JavaCameraView implements PictureCallback {
             FileOutputStream fos = new FileOutputStream(mPictureFileName);
             fos.write(data);
             fos.close();
-
         } catch (java.io.IOException e) {
             Log.e("PictureDemo", "Exception in photoCallback", e);
         }

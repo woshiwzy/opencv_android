@@ -127,7 +127,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
         mOpenCvCameraView = findViewById(R.id.fd_activity_surface_view);
 
-        mOpenCvCameraView.setUseFrontCamera(false);
+        mOpenCvCameraView.setUseFrontCamera(true);
 
         mOpenCvCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);

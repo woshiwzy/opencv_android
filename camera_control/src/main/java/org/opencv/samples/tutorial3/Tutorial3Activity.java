@@ -74,6 +74,7 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
         mOpenCvCameraView = (Tutorial3View) findViewById(R.id.tutorial3_activity_java_surface_view);
 
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
+        mOpenCvCameraView.setUseFrontCamera(true);
 
         mOpenCvCameraView.setCvCameraViewListener(this);
     }

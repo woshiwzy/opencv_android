@@ -8,6 +8,8 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfFloat;
 import org.opencv.core.Size;
 import org.opencv.ml.KNearest;
+import org.opencv.ml.RTrees;
+import org.opencv.ml.SVM;
 import org.opencv.ml.TrainData;
 import org.opencv.objdetect.HOGDescriptor;
 
@@ -29,6 +31,9 @@ public class DataPool {
     static KNearest kNearest = null;
     static HashMap<Integer, String> n2f = new HashMap();//数字label，和文件名映射
 
+//    private static  SVM svm = null;
+
+
     static {
         //HOGDescriptor::HOGDescriptor(_winSize, _blockSize, _blockStride, _cellSize, _nbins)
         //配置特征采集器
@@ -43,6 +48,9 @@ public class DataPool {
         kNearest = KNearest.create();
         kNearest.setDefaultK(3);
         kNearest.setIsClassifier(true);
+
+
+//        svm=SVM.create();
     }
 
 
