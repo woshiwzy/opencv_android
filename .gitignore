@@ -9,3 +9,5 @@
 /build/intermediates
 /captures
 .externalNativeBuild
+myopencvdemo/release/
+opencv/build/
