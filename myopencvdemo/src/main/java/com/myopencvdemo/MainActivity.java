@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.buttonPreview).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startNewActivity(CameraPreviewActivity.class);
+                startNewActivity(PokerRecActivity.class);
             }
         });
 
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
                     textViewStatus.setText("结束");
 
-                    Intent intent = new Intent(MainActivity.this, CameraPreviewActivity.class);
+                    Intent intent = new Intent(MainActivity.this, PokerRecActivity.class);
                     startActivity(intent);
                 }
             });

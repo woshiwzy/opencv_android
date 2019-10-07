@@ -1,4 +1,4 @@
-include ':face_dect', ':opencv', ':camera_control', ':calibration', ':camera_preview', ':myopencvdemo'
+include ':face_dect', ':face_dect_daxin',':opencv', ':camera_control', ':calibration', ':camera_preview', ':myopencvdemo'
 
 //
 //def opencvsdk = '/Users/wangzy/workspace/opencv_work/opencvface2/opencv'

@@ -7,6 +7,7 @@
     <org.opencv.android.JavaCameraView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        opencv:show_fps="true"
         android:id="@+id/camera_calibration_java_surface_view" />
 
 </LinearLayout>

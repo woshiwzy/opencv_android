@@ -26,7 +26,7 @@ import java.util.List;
 
 import static org.opencv.core.CvType.CV_8UC1;
 
-public class CameraPreviewActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2 {
+public class PokerRecActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2 {
     private static final String TAG = "cv";
 
     private JavaCameraView mOpenCvCameraView;
@@ -55,7 +55,7 @@ public class CameraPreviewActivity extends Activity implements CameraBridgeViewB
         }
     };
 
-    public CameraPreviewActivity() {
+    public PokerRecActivity() {
         Log.i(TAG, "Instantiated new " + this.getClass());
     }
 
