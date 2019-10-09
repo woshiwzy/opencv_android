@@ -4,7 +4,7 @@ opencv 学习
 
 1.opencv android 开发环境搭建（No manager）
 
-2.添加了扑克牌检测
+2.添加了扑克牌检测(见下面效果图)
 
 ![image](https://raw.githubusercontent.com/woshiwzy/opencv_android/master/poker_rec_demo.gif)
 
