@@ -18,7 +18,11 @@ import org.opencv.android.OpenCVLoader;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * 入口Activity
@@ -84,20 +88,10 @@ public class EntryActivity extends AppCompatActivity {
             }
         });
 
-//        findViewById(R.id.buttonAna).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startNewActivity(SingImageAnaActivity.class);
-//            }
-//        });
-
         findViewById(R.id.createMlData).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 new MlThread(mldataPath).start();
-
 
             }
         });
@@ -122,7 +116,6 @@ public class EntryActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -135,21 +128,35 @@ public class EntryActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     textViewStatus.setText("拷贝样本数据到sdcard");
-                    showProgressBar();
                 }
             });
 
-            copyAssets(EntryActivity.this, "good_data.zip", "/sdcard/good_data.zip");
+            //拷贝数据
+            File zipFile=new File("/sdcard/good_data.zip");
+            if(!zipFile.exists()){
+                copyAssets(EntryActivity.this, "good_data.zip", "/sdcard/good_data.zip");
+            }
 
+            //解压缩
+            File mldataPathFile=new File(mldataPath);
+            if(!mldataPathFile.exists()){
+                unZip(zipFile,Environment.getExternalStorageDirectory() + File.separator);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        textViewStatus.setText("解压完成");
+                    }
+                });
+            }
+
+            //初始化机器学习数据
             File file = new File(path);
             File[] fs = file.listFiles();
             DataPool.clear();
-
             for (File t : fs) {
                 if (t.isFile()) {
                     continue;
                 }
-
                 MlData mlData = MlData.createMlDataFromDirectory(t);
                 if (null == mlData) {
                     Log.i(App.tag, "ret:" + mlData.toString());
@@ -163,9 +170,7 @@ public class EntryActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     hideProgressBar();
-
                     textViewStatus.setText("结束");
-
                     Intent intent = new Intent(EntryActivity.this, PokerRecActivity.class);
                     startActivity(intent);
                 }
@@ -183,7 +188,6 @@ public class EntryActivity extends AppCompatActivity {
 
     /**
      * 复制asset文件到指定目录
-     *
      * @param oldPath asset下的路径
      * @param newPath SD卡下保存路径
      */
@@ -213,5 +217,67 @@ public class EntryActivity extends AppCompatActivity {
             e.printStackTrace();
             Log.e(App.tag, "拷贝出错：" + e.getLocalizedMessage());
         }
+    }
+
+
+    public static void unZip(File srcFile, String destDirPath) throws RuntimeException {
+        long start = System.currentTimeMillis();
+        // 判断源文件是否存在
+        if (!srcFile.exists()) {
+            throw new RuntimeException(srcFile.getPath() + "所指文件不存在");
+        }
+
+        // 开始解压
+        ZipFile zipFile = null;
+
+        try {
+
+            zipFile = new ZipFile(srcFile);
+            Enumeration<?> entries = zipFile.entries();
+            while (entries.hasMoreElements()) {
+
+                ZipEntry entry = (ZipEntry) entries.nextElement();
+                System.out.println("解压" + entry.getName());
+                if (entry.isDirectory()) {
+                    String dirPath = destDirPath + "/" + entry.getName();
+                    File dir = new File(dirPath);
+                    dir.mkdirs();
+                } else {
+                    // 如果是文件，就先创建一个文件，然后用io流把内容copy过去
+                    File targetFile = new File(destDirPath + "/" + entry.getName());
+                    // 保证这个文件的父文件夹必须要存在
+                    if(!targetFile.getParentFile().exists()){
+                        targetFile.getParentFile().mkdirs();
+                    }
+                    targetFile.createNewFile();
+                    // 将压缩文件内容写入到这个文件中
+                    InputStream is = zipFile.getInputStream(entry);
+                    FileOutputStream fos = new FileOutputStream(targetFile);
+                    int len;
+                    byte[] buf = new byte[1024];
+                    while ((len = is.read(buf)) != -1) {
+                        fos.write(buf, 0, len);
+                    }
+                    // 关流顺序，先打开的后关闭
+                    fos.close();
+                    is.close();
+                }
+            }
+            long end = System.currentTimeMillis();
+            System.out.println("解压完成，耗时：" + (end - start) +" ms");
+        } catch (Exception e) {
+            throw new RuntimeException("unzip error from ZipUtils", e);
+        } finally {
+            if(zipFile != null){
+                try {
+                    zipFile.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        }
+
     }
 }
