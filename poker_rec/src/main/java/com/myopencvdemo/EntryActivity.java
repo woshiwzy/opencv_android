@@ -27,7 +27,6 @@ public class EntryActivity extends AppCompatActivity {
     public static String targetpath = "pork";//学习模式收集的图片存放的位置
     public static String dataPath = Environment.getExternalStorageDirectory() + File.separator + targetpath;//学习模式收集的图片存放的位置
 
-
     public static String mldata = "good_data";//采集好的分类图片存放的位置
     public static String mldataPath = Environment.getExternalStorageDirectory() + File.separator + mldata;
 
@@ -94,7 +93,11 @@ public class EntryActivity extends AppCompatActivity {
         findViewById(R.id.createMlData).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 new MlThread(mldataPath).start();
+
+
             }
         });
 
