@@ -4,10 +4,6 @@ import org.opencv.core.Mat;
 
 import java.util.TreeMap;
 
-/**
- * Created by wangzy on 2018/11/21
- * description:
- */
 public class CVTools {
 
 

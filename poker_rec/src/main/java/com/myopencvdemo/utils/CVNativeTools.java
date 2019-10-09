@@ -2,10 +2,6 @@ package com.myopencvdemo.utils;
 
 import java.util.TreeMap;
 
-/**
- * Created by wangzy on 2018/11/22
- * description:
- */
 public class CVNativeTools {
 
 
