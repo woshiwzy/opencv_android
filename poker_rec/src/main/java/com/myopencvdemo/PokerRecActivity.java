@@ -249,12 +249,12 @@ public class PokerRecActivity extends Activity implements CameraBridgeViewBase.C
                     if (checkBoxStudy.isChecked()) {//学习模式
 
                         Mat matArea = new Mat(dst, rect);
-                        File dirFile = new File(MainActivity.dataPath);
+                        File dirFile = new File(EntryActivity.dataPath);
                         if (!dirFile.exists()) {
                             dirFile.mkdir();
                             Log.i(App.tag, "mkdir:" + dirFile.getAbsolutePath());
                         }
-                        String path = MainActivity.dataPath + File.separator + String.valueOf(System.currentTimeMillis()) + ".png";
+                        String path = EntryActivity.dataPath + File.separator + String.valueOf(System.currentTimeMillis()) + ".png";
                         Log.i(App.tag, "save path:" + path);
                         Bitmap bitmapMat = Bitmap.createBitmap(matArea.cols(), matArea.rows(), Bitmap.Config.RGB_565);
                         Utils.matToBitmap(matArea, bitmapMat);

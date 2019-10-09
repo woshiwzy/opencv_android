@@ -17,20 +17,23 @@ import org.opencv.android.OpenCVLoader;
 
 import java.io.File;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * 入口Activity
+ */
+public class EntryActivity extends AppCompatActivity {
 
 
-    public static String targetpath = "pork";
 
-    public static String dataPath = Environment.getExternalStorageDirectory() + File.separator + targetpath;
+    public static String targetpath = "pork";//学习模式收集的图片存放的位置
+    public static String dataPath = Environment.getExternalStorageDirectory() + File.separator + targetpath;//学习模式收集的图片存放的位置
 
-    public static String mldata = "good_data";
 
+    public static String mldata = "good_data";//采集好的分类图片存放的位置
     public static String mldataPath = Environment.getExternalStorageDirectory() + File.separator + mldata;
 
 
-    TextView textViewStatus;
 
+    TextView textViewStatus;
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -74,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main);
 
         textViewStatus = findViewById(R.id.textViewStatus);
-
         findViewById(R.id.buttonPreview).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,17 +91,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         findViewById(R.id.createMlData).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 new MlThread(mldataPath).start();
-
             }
         });
-
 
         if (!OpenCVLoader.initDebug()) {
             Log.d(App.tag, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
@@ -126,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     textViewStatus.setText("稍后");
+                    showProgressBar();
                 }
             });
 
@@ -150,11 +148,11 @@ public class MainActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-//                    hideProgressBar();
+                  hideProgressBar();
 
                     textViewStatus.setText("结束");
 
-                    Intent intent = new Intent(MainActivity.this, PokerRecActivity.class);
+                    Intent intent = new Intent(EntryActivity.this, PokerRecActivity.class);
                     startActivity(intent);
                 }
             });
