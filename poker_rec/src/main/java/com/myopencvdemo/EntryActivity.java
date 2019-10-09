@@ -1,5 +1,6 @@
 package com.myopencvdemo;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
 /**
  * 入口Activity
@@ -23,13 +26,11 @@ import java.io.File;
 public class EntryActivity extends AppCompatActivity {
 
 
-
     public static String targetpath = "pork";//学习模式收集的图片存放的位置
     public static String dataPath = Environment.getExternalStorageDirectory() + File.separator + targetpath;//学习模式收集的图片存放的位置
 
     public static String mldata = "good_data";//采集好的分类图片存放的位置
     public static String mldataPath = Environment.getExternalStorageDirectory() + File.separator + mldata;
-
 
 
     TextView textViewStatus;
@@ -83,12 +84,12 @@ public class EntryActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.buttonAna).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startNewActivity(SingImageAnaActivity.class);
-            }
-        });
+//        findViewById(R.id.buttonAna).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startNewActivity(SingImageAnaActivity.class);
+//            }
+//        });
 
         findViewById(R.id.createMlData).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +131,16 @@ public class EntryActivity extends AppCompatActivity {
                 }
             });
 
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    textViewStatus.setText("拷贝样本数据到sdcard");
+                    showProgressBar();
+                }
+            });
+
+            copyAssets(EntryActivity.this, "good_data.zip", "/sdcard/good_data.zip");
+
             File file = new File(path);
             File[] fs = file.listFiles();
             DataPool.clear();
@@ -151,7 +162,7 @@ public class EntryActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                  hideProgressBar();
+                    hideProgressBar();
 
                     textViewStatus.setText("结束");
 
@@ -167,5 +178,40 @@ public class EntryActivity extends AppCompatActivity {
     private void startNewActivity(Class claz) {
         Intent intent = new Intent(this, claz);
         startActivity(intent);
+    }
+
+
+    /**
+     * 复制asset文件到指定目录
+     *
+     * @param oldPath asset下的路径
+     * @param newPath SD卡下保存路径
+     */
+    public static void copyAssets(Context context, String oldPath, String newPath) {
+        try {
+            String fileNames[] = context.getAssets().list(oldPath);// 获取assets目录下的所有文件及目录名
+            if (fileNames.length > 0) {// 如果是目录
+                File file = new File(newPath);
+                file.mkdirs();// 如果文件夹不存在，则递归
+                for (String fileName : fileNames) {
+                    copyAssets(context, oldPath + "/" + fileName, newPath + "/" + fileName);
+                }
+            } else {// 如果是文件
+                InputStream is = context.getAssets().open(oldPath);
+                FileOutputStream fos = new FileOutputStream(new File(newPath));
+                byte[] buffer = new byte[1024];
+                int byteCount = 0;
+                while ((byteCount = is.read(buffer)) != -1) {// 循环从输入流读取
+                    // buffer字节
+                    fos.write(buffer, 0, byteCount);// 将读取的输入流写入到输出流
+                }
+                fos.flush();// 刷新缓冲区
+                is.close();
+                fos.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(App.tag, "拷贝出错：" + e.getLocalizedMessage());
+        }
     }
 }
