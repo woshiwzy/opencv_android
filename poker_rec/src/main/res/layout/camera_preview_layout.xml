@@ -1,0 +1,116 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:opencv="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+
+
+        <org.opencv.android.JavaCameraView
+                android:id="@+id/tutorial1_activity_java_surface_view"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:visibility="gone"
+                opencv:camera_id="any"
+                opencv:show_fps="false"/>
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical">
+
+
+            <View android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="4"
+                  android:id="@+id/converView"
+                  android:background="#88000000"/>
+
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="0dp"
+                          android:layout_weight="1.1"
+                          android:orientation="horizontal"
+                          android:background="@drawable/shape_bg_line"
+                          android:id="@+id/viewContent">
+
+            </LinearLayout>
+
+
+            <View android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="4"
+                  android:background="#88000000"/>
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/relativeLayoutBottomOp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:visibility="invisible"
+            android:background="#bbffaa"
+            android:orientation="horizontal">
+
+        <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:max="255"
+                android:maxWidth="150dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:min="0"
+                android:layout_toLeftOf="@id/checkBoxCaerma"
+                android:minWidth="150dp"
+                android:progress="125"/>
+
+        <CheckBox
+                android:id="@+id/checkBoxCaerma"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="切换"/>
+
+
+    </RelativeLayout>
+
+
+    <ImageView
+            android:id="@+id/imageViewRightTarget"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:minWidth="100dp"
+            android:minHeight="30dp"
+            android:background="@android:color/darker_gray"
+            android:layout_height="wrap_content"
+    />
+
+    <CheckBox
+            android:id="@+id/checkBoxStudy"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="学习模式"
+            android:background="@android:color/darker_gray"
+    />
+
+    <TextView
+            android:id="@+id/textViewResult"
+            android:background="@drawable/shape_bg_result"
+            android:layout_alignParentBottom="true"
+            android:textColor="#bbffaa"
+            android:minHeight="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+</RelativeLayout>
