@@ -1,5 +1,7 @@
-# opencv_android
+# opencv_android 
+
 opencv 学习
+
 1.opencv android 开发环境搭建（No manager）
 
 2.添加了扑克牌检测
