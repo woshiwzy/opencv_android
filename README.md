@@ -1,6 +1,7 @@
 # opencv_android 
 
 opencv 学习
+百度云盘下载链接:https://pan.baidu.com/s/1TaVu5_Vpp2psiXVI9bidgw
 
 1.opencv android 开发环境搭建（No manager）
 
