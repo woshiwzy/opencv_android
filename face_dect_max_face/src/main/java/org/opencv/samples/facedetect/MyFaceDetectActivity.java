@@ -92,6 +92,7 @@ public class MyFaceDetectActivity extends Activity implements CvCameraViewListen
                     }
 
                     mOpenCvCameraView.enableView();
+//                    mOpenCvCameraView.setRotation(180);
                 }
                 break;
                 default: {
@@ -213,7 +214,6 @@ public class MyFaceDetectActivity extends Activity implements CvCameraViewListen
                 final Bitmap bitmapMat = Bitmap.createBitmap(targetMat.cols(), targetMat.rows(), Bitmap.Config.RGB_565);
                 Utils.matToBitmap(targetMat, bitmapMat);
 //               imageViewFace.setImageBitmap(bitmapMat);
-
                 imageViewFace.post(new Runnable() {
                     @Override
                     public void run() {
@@ -221,9 +221,18 @@ public class MyFaceDetectActivity extends Activity implements CvCameraViewListen
                     }
                 });
             }
-
         }
 
+//        Mat dst = new Mat();
+//        Mat gray = inputFrame.gray();
+//        Mat rotateMat = Imgproc.getRotationMatrix2D(new Point(gray.rows()/2,gray.cols()/2), 90, 1);
+//        Imgproc.warpAffine(gray, dst, rotateMat, dst.size());
+//
+//        Mat rdst=new Mat(gray.rows()*2,gray.cols()*2,dst.type());
+//
+//        Imgproc.resize(dst,rdst,rdst.size());
+//
+//        return rdst;
         return mRgba;
     }
 

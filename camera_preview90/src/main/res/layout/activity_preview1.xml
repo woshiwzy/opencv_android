@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:opencv="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:id="@+id/mainContent"
+                android:background="#bbffaa"
+                android:contentDescription="Android8.0以上 必须要要设定padding/或者写死CamerView高度或者宽度 不然相机会崩溃，好奇怪的bug,原因是预览框不能超过1920X1080，详情见org.opencv.android.CameraBridgeViewBase 515行"
+                android:layout_height="match_parent">
+
+
+    <org.opencv.android.JavaCameraView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:id="@+id/tutorial1_activity_java_surface_view"
+            opencv:show_fps="true"
+            opencv:camera_id="any"/>
+
+    <ImageView
+            android:id="@+id/imageViewPreview"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="#bbffaa"
+            android:layout_height="wrap_content"/>
+
+
+    <ImageView
+            android:id="@+id/imageViewPreview2"
+            android:layout_width="match_parent"
+            android:background="#bbffaa"
+            android:scaleType="fitXY"
+            android:layout_alignParentBottom="true"
+            android:layout_height="match_parent"/>
+
+</RelativeLayout>

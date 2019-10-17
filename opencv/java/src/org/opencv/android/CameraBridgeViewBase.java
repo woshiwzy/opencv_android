@@ -58,6 +58,9 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
     public boolean useFrontCamera = false;
 
 
+    public boolean isDrawSource = true;
+
+
     public CameraBridgeViewBase(Context context, int cameraId) {
         super(context);
         mCameraIndex = cameraId;
@@ -400,12 +403,17 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
      * @param frame - the current frame to be delivered
      */
     protected void deliverAndDrawFrame(CvCameraViewFrame frame) {
+
         Mat modified;
 
         if (mListener != null) {
             modified = mListener.onCameraFrame(frame);
         } else {
             modified = frame.rgba();
+        }
+
+        if (isDrawSource == false) {
+            return;
         }
 
         if (useFrontCamera) {
@@ -425,6 +433,7 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
         }
 
         if (bmpValid && mCacheBitmap != null) {
+
             Canvas canvas = getHolder().lockCanvas();
             if (canvas != null) {
                 canvas.drawColor(0, android.graphics.PorterDuff.Mode.CLEAR);
@@ -445,6 +454,7 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
                                     (canvas.getHeight() - mCacheBitmap.getHeight()) / 2 + mCacheBitmap.getHeight()), null);
                 }
 
+
                 if (mFpsMeter != null) {
                     mFpsMeter.measure();
                     mFpsMeter.draw(canvas, 20, 30);
@@ -452,6 +462,8 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
                 getHolder().unlockCanvasAndPost(canvas);
             }
         }
+
+
     }
 
     /**
@@ -530,5 +542,13 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
             setCameraIndex(0);
         }
 
+    }
+
+    public boolean isDrawSource() {
+        return isDrawSource;
+    }
+
+    public void setDrawSource(boolean drawSource) {
+        isDrawSource = drawSource;
     }
 }
