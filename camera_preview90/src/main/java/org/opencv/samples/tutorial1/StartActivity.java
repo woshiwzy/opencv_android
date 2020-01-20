@@ -45,7 +45,7 @@ public class StartActivity extends Activity {
     }
 
     private void startCampera() {
-        Intent intent = new Intent(this, PreView1Activity.class);
+        Intent intent = new Intent(this, FrontCameraRotate90PreviewActivity.class);
         startActivity(intent);
     }
 

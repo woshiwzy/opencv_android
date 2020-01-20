@@ -403,7 +403,6 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
      * @param frame - the current frame to be delivered
      */
     protected void deliverAndDrawFrame(CvCameraViewFrame frame) {
-
         Mat modified;
 
         if (mListener != null) {
@@ -416,7 +415,7 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
             return;
         }
 
-        if (useFrontCamera) {
+        if (useFrontCamera) {//如果使用前置摄像头，左右是反的，所以需要矫正
             Core.flip(modified, modified, 1);//如果是前置摄像头需要纠正
         }
 
@@ -525,8 +524,9 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
         }
 
         //如果预览框的高度大于1080 在某些设备上的相机不能支持,导致相机连接失败，最好不要超过1080的高度
-        calcHeight = calcHeight >= 1080 ? 1080 : calcHeight;
+//        calcHeight = calcHeight >= 1080 ? 1080 : calcHeight;
         return new Size(calcWidth, calcHeight);
+//        return new Size(1920,1080);
     }
 
 

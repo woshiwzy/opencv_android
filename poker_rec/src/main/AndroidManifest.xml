@@ -35,10 +35,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".PokerRecActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".SingImageAnaActivity"></activity>
+
+        <activity android:name=".SingImageAnaActivity"/>
+
+
+        <activity
+                android:name=".PokerRecJiaoXueActivity"
+                android:screenOrientation="landscape" />
+
+
     </application>
 
 </manifest>

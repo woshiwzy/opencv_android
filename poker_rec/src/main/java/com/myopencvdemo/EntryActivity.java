@@ -84,7 +84,7 @@ public class EntryActivity extends AppCompatActivity {
         findViewById(R.id.buttonPreview).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startNewActivity(PokerRecActivity.class);
+                startNewActivity(PokerRecJiaoXueActivity.class);
             }
         });
 

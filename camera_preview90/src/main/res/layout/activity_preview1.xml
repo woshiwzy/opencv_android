@@ -11,7 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/tutorial1_activity_java_surface_view"
             opencv:show_fps="true"
             opencv:camera_id="any"/>

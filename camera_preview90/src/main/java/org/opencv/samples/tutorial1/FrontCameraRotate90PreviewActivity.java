@@ -15,12 +15,12 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 
-public class PreView1Activity extends Activity implements CvCameraViewListener2 {
+public class FrontCameraRotate90PreviewActivity extends Activity implements CvCameraViewListener2 {
 
     private static final String TAG = App.tag;
     private JavaCameraView mOpenCvCameraView;
-
     private ImageView imageViewPreview;
     private ImageView imageViewPreview2;
 
@@ -41,7 +41,7 @@ public class PreView1Activity extends Activity implements CvCameraViewListener2 
         }
     };
 
-    public PreView1Activity() {
+    public FrontCameraRotate90PreviewActivity() {
         Log.i(TAG, "Instantiated new " + this.getClass());
     }
 
@@ -91,6 +91,7 @@ public class PreView1Activity extends Activity implements CvCameraViewListener2 
         super.onDestroy();
         if (mOpenCvCameraView != null)
             mOpenCvCameraView.disableView();
+
     }
 
     public void onCameraViewStarted(int width, int height) {
@@ -141,6 +142,7 @@ public class PreView1Activity extends Activity implements CvCameraViewListener2 
 //        Imgproc.circle(src, new Point(0, 0), 20, new Scalar(255, 55, 55));
 
         Core.flip(src, src, 1);//翻转左右，不然旋转90度之后会有问题
+
 
         final Bitmap bitmapfull = Bitmap.createBitmap(src.cols(), src.rows(), Bitmap.Config.RGB_565);
         Utils.matToBitmap(src, bitmapfull);
