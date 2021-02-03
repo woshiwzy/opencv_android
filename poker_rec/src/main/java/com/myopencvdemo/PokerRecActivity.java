@@ -231,14 +231,12 @@ public class PokerRecActivity extends Activity implements CameraBridgeViewBase.C
             Imgproc.findContours(dst, contours, new Mat(dst.rows(), dst.cols(), dst.type()), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);//CV_RETR_CCOMP, CV_CHAIN_APPROX_NONE
 
 
-
             ArrayList<RecResult> predicateds = new ArrayList<>();
 
             for (int i = 0, isize = contours.size(); i < isize; i++) {
                 MatOfPoint temp = contours.get(i);
-                Rect rect = Imgproc.boundingRect(temp);
-
-                float wh = (rect.width * 1.0f / rect.height);
+                Rect rect = Imgproc.boundingRect(temp);//使用boundingRect 方法联通区域变成矩形区域
+                float wh = (rect.width * 1.0f / rect.height);//宽高比例
                 boolean test = false;
 
                 if ((test) || (rect.height > (targetHeight*1.0f / 5)) && (rect.height < 0.8f * targetHeight) && (rect.width < (targetMat.width() / 8)) && (wh < 2)) {
@@ -273,28 +271,28 @@ public class PokerRecActivity extends Activity implements CameraBridgeViewBase.C
 
                         if (needRec) {
                             //识别模式
-                            Mat matArea = new Mat(dst, rect);
-                            Mat dstMat = new Mat(MlData.UNITWIDTH, MlData.UNITHEIGHT, matArea.type());
-                            Imgproc.resize(matArea, dstMat, new Size(MlData.UNITWIDTH, MlData.UNITHEIGHT));//归一化
+                            Mat matArea = new Mat(dst, rect);//裁剪出候选区域
+                            Mat dstMat = new Mat(MlData.UNITWIDTH, MlData.UNITHEIGHT, matArea.type());//
+                            Imgproc.resize(matArea, dstMat, new Size(MlData.UNITWIDTH, MlData.UNITHEIGHT));//归一化，把所有的图片大小调整成一样大，得到的特征值才会是一样的
 
-                            MatOfFloat matf = new MatOfFloat();//计算特征
-                            DataPool.getHogDescriptor().compute(dstMat, matf);
+                            MatOfFloat matf = new MatOfFloat();
+                            DataPool.getHogDescriptor().compute(dstMat, matf);//计算特征
 
 //                        Log.e(App.tag, "matf row:" + matf.rows());
-                            Mat nmatf = matf.reshape(0, 1);
+                            Mat nmatf = matf.reshape(0, 1);//修改特征值的为1行N列
 
                             Mat result = new Mat();
 //                          Log.e(App.tag, "test col:" + nmatf.cols());
 
-                            float response = DataPool.getkNearest().predict(nmatf, result);
+                            float response = DataPool.getkNearest().predict(nmatf, result);//预测结果,这里的预测结果是一个数字，这个数字代表一个样本文件详情见初始化学习书序代码
 //
 //                          Log.e(App.tag, "percent:" + DataPool.getPredicatedResult(response) + " predicated:" + nmatf.toString());
 
                             String resultStr = result.toString();
-                            String resultLabel = DataPool.getPredicatedResult(response);
+                            String resultLabel = DataPool.getPredicatedResult(response);//把数字转换成对应的文件,比如 /sdcard/0/0.png
                             File file = new File(resultLabel);
-                            String responnse = file.getParentFile().getName();
-                            if (!"X".equalsIgnoreCase(responnse)) {
+                            String responnse = file.getParentFile().getName();//得到文件名 比如这个文件是0.png，得到的就是0,意味着识别的结果就是0
+                            if (!"X".equalsIgnoreCase(responnse)) {//如果是X文件夹里面的，忽略之，否则添加到预测的结果中
 //                                Log.e(App.tag, "识别结果：" + responnse);
                                 predicateds.add(new RecResult(responnse, rect.x, resultLabel));
                             }
